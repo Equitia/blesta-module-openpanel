@@ -573,6 +573,29 @@ class Openpanel extends Module
                     return;
                 }
             }
+
+            // 3. Create the Domain (if provided and user created successfully)
+            if ($domain) {
+                try {
+                    $this->apiRequest(
+                        $row,
+                        'POST',
+                        'domains/new',
+                        [
+                            'username' => $username,
+                            'domain' => $domain,
+                            'domain_url' => $domain, // Ensure compatibility with both API versions
+                            'docroot' => '/var/www/html/' . $domain
+                        ]
+                    );
+                } catch (Exception $e) {
+                    // Log error but don't fail the service creation if user is already created
+                    // The user might need to add the domain manually or contact support.
+                    $this->log($row->meta->hostname . '|add_domain', $e->getMessage(), 'output', false);
+                    // Optionally set a non-fatal error or warning?
+                    // Blesta doesn't support warnings well in this context.
+                }
+            }
         }
 
         return [
