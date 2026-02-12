@@ -1,0 +1,77 @@
+<?php
+$rows = $module_rows ?? [];
+
+$link_buttons = [
+    [
+        'name' => Language::_('Openpanel.manage.add_row', true),
+        'attributes' => ['href' => $base_uri . 'settings/company/modules/addrow/' . ($module->id ?? '')]
+    ]
+];
+
+$this->Widget->clear();
+$this->Widget->setLinkButtons($link_buttons);
+$this->Widget->create(
+    Language::_('AdminCompanyModules.manage.boxtitle_manage', true, isset($module->name) ? $this->Html->safe($module->name) : null),
+    ['id' => 'manage_openpanel']
+);
+?>
+
+<div class="title_row first">
+    <h3><?php echo Language::_('Openpanel.manage.module_rows_title', true); ?></h3>
+</div>
+
+<?php if (!empty($rows)) { ?>
+    <table class="table">
+        <tr class="heading_row">
+            <td><span><?php echo Language::_('Openpanel.manage.server_name', true); ?></span></td>
+            <td><span><?php echo Language::_('Openpanel.manage.hostname', true); ?></span></td>
+            <td><span><?php echo Language::_('Openpanel.manage.port', true); ?></span></td>
+            <td class="last"><span><?php echo Language::_('Openpanel.manage.actions', true); ?></span></td>
+        </tr>
+        <?php foreach ($rows as $i => $row) {
+            $edit_uri = $base_uri . 'settings/company/modules/editrow/' . ($module->id ?? '') . '/' . $row->id . '/';
+            $delete_uri = $base_uri . 'settings/company/modules/deleterow/' . ($module->id ?? '') . '/' . $row->id . '/';
+        ?>
+        <tr<?php echo ($i % 2 == 1) ? ' class="odd_row"' : ''; ?>>
+            <td><?php echo htmlspecialchars($row->meta->server_name ?? ''); ?></td>
+            <td><?php echo htmlspecialchars($row->meta->hostname ?? ''); ?></td>
+            <td><?php echo htmlspecialchars($row->meta->port ?? ''); ?></td>
+            <td>
+                <a href="<?php echo $this->Html->safe($edit_uri); ?>">
+                    <?php echo Language::_('Openpanel.manage.edit', true); ?>
+                </a>
+                <?php
+                $this->Form->create($base_uri . 'settings/company/modules/deleterow/');
+                $this->Form->fieldHidden('id', (isset($module->id) ? $module->id : null));
+                $this->Form->fieldHidden('row_id', (isset($row->id) ? $row->id : null));
+                ?>
+                <a href="<?php echo $this->Html->safe($delete_uri); ?>" class="manage"
+                   rel="<?php echo $this->Html->safe(Language::_('Openpanel.manage.delete_confirm', true)); ?>">
+                    <?php echo Language::_('Openpanel.manage.delete', true); ?>
+                </a>
+                <?php
+                $this->Form->end();
+                ?>
+            </td>
+        </tr>
+        <?php } ?>
+    </table>
+<?php } else { ?>
+    <div class="empty_section">
+        <div class="empty_box">
+            <?php echo Language::_('Openpanel.manage.no_results', true); ?>
+        </div>
+    </div>
+<?php } ?>
+
+<?php $this->Widget->end(); ?>
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('#manage_openpanel a.manage[rel]').blestaModalConfirm({
+            base_url: '<?php echo $base_uri; ?>',
+            close: '<?php echo Language::_('AppController.modal.text_close', true); ?>',
+            submit: true
+        });
+    });
+</script>

@@ -1,0 +1,20 @@
+<?php
+$fields = $service_fields ?? new stdClass();
+$plan = $fields->plan_name ?? ($package->meta->plan_name ?? null);
+?>
+<div class="openpanel-service-info">
+    <p><strong><?php echo Language::_('Openpanel.service_info.username', true); ?>:</strong>
+        <?php echo htmlspecialchars($fields->openpanel_username ?? ''); ?></p>
+    <p><strong><?php echo Language::_('Openpanel.service_info.plan', true); ?>:</strong>
+        <?php echo htmlspecialchars($plan ?? ''); ?></p>
+
+    <?php if (!empty($login_link)) { ?>
+        <p>
+            <a class="btn btn-primary" href="<?php echo htmlspecialchars($login_link); ?>" target="_blank" rel="noopener">
+                <?php echo Language::_('Openpanel.service_info.login', true); ?>
+            </a>
+        </p>
+    <?php } else { ?>
+        <p><?php echo Language::_('Openpanel.service_info.login_unavailable', true); ?></p>
+    <?php } ?>
+</div>

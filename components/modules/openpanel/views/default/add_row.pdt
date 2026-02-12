@@ -1,0 +1,101 @@
+<?php
+$vars = isset($vars) ? $vars : new stdClass();
+
+$use_ssl = (!isset($vars->use_ssl) || $vars->use_ssl === '1' || $vars->use_ssl === true);
+$verify_ssl = (!isset($vars->verify_ssl) || $vars->verify_ssl === '1' || $vars->verify_ssl === true);
+?>
+<?php echo $this->Form->create(null, ['id' => 'openpanel_row']); ?>
+<div class="panel panel-default openpanel-config">
+    <div class="panel-body form-horizontal">
+        <div class="form-group">
+            <label class="col-md-3 col-sm-4 control-label" for="openpanel_server_name">
+                <?php echo Language::_('Openpanel.manage.server_name', true); ?>
+            </label>
+            <div class="col-md-6 col-sm-8">
+                <input type="text" name="server_name" id="openpanel_server_name" class="form-control"
+                    value="<?php echo htmlspecialchars($vars->server_name ?? ''); ?>" placeholder="OpenPanel #1" />
+                <input type="hidden" name="name" id="openpanel_row_name"
+                    value="<?php echo htmlspecialchars($vars->server_name ?? ''); ?>" />
+                <p class="help-block">Friendly label shown in server lists.</p>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-md-3 col-sm-4 control-label" for="openpanel_hostname">
+                <?php echo Language::_('Openpanel.manage.hostname', true); ?>
+            </label>
+            <div class="col-md-6 col-sm-8">
+                <input type="text" name="hostname" id="openpanel_hostname" class="form-control"
+                    value="<?php echo htmlspecialchars($vars->hostname ?? ''); ?>" placeholder="panel.example.com" />
+                <p class="help-block">Hostname or IP of your OpenAdmin endpoint.</p>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-md-3 col-sm-4 control-label" for="openpanel_port">
+                <?php echo Language::_('Openpanel.manage.port', true); ?>
+            </label>
+            <div class="col-md-3 col-sm-4">
+                <input type="number" name="port" id="openpanel_port" class="form-control"
+                    value="<?php echo htmlspecialchars($vars->port ?? '2087'); ?>" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-md-3 col-sm-4 control-label"><?php echo Language::_('Openpanel.manage.security', true); ?></label>
+            <div class="col-md-6 col-sm-8">
+                <label class="checkbox-inline">
+                    <input type="hidden" name="use_ssl" value="0" />
+                    <input type="checkbox" name="use_ssl" id="openpanel_use_ssl" value="1" <?php echo $use_ssl ? 'checked' : ''; ?> />
+                    <?php echo Language::_('Openpanel.manage.use_ssl', true); ?>
+                </label>
+                <label class="checkbox-inline">
+                    <input type="hidden" name="verify_ssl" value="0" />
+                    <input type="checkbox" name="verify_ssl" id="openpanel_verify_ssl" value="1" <?php echo $verify_ssl ? 'checked' : ''; ?> />
+                    <?php echo Language::_('Openpanel.manage.verify_ssl', true); ?>
+                </label>
+                <p class="help-block">Uncheck verify only for self-signed certs while testing.</p>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-md-3 col-sm-4 control-label" for="openpanel_admin_username">
+                <?php echo Language::_('Openpanel.manage.admin_username', true); ?>
+            </label>
+            <div class="col-md-6 col-sm-8">
+                <input type="text" name="admin_username" id="openpanel_admin_username" class="form-control"
+                    value="<?php echo htmlspecialchars($vars->admin_username ?? ''); ?>" placeholder="admin" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-md-3 col-sm-4 control-label" for="openpanel_admin_password">
+                <?php echo Language::_('Openpanel.manage.admin_password', true); ?>
+            </label>
+            <div class="col-md-6 col-sm-8">
+                <input type="password" name="admin_password" id="openpanel_admin_password" class="form-control"
+                    value="<?php echo htmlspecialchars($vars->admin_password ?? ''); ?>" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-3 col-sm-offset-4 col-md-6 col-sm-8">
+                <button type="submit" class="btn btn-primary">
+                    <?php echo Language::_('Openpanel.manage.save', true); ?>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    (function() {
+        var label = document.getElementById('openpanel_server_name');
+        var hiddenName = document.getElementById('openpanel_row_name');
+        if (label && hiddenName) {
+            label.addEventListener('input', function () {
+                hiddenName.value = this.value;
+            });
+        }
+    })();
+</script>
+<?php echo $this->Form->end(); ?>

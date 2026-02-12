@@ -1,0 +1,38 @@
+{
+    "version": "1.0.0",
+    "name": "OpenPanel",
+    "description": "Provision and manage OpenPanel accounts via the OpenAdmin API.",
+    "type": "generic",
+    "authors": [
+        {
+            "name": "OpenPanel",
+            "url": "https://openpanel.com"
+        }
+    ],
+    "module": {
+        "row": "OpenPanel Server",
+        "rows": "OpenPanel Servers",
+        "group": "Server Group",
+        "row_key": "hostname"
+    },
+    "package": {
+        "name_key": "plan_name"
+    },
+    "service": {
+        "name_key": "openpanel_username"
+    },
+    "email_tags": {
+        "service": [
+            "openpanel_username",
+            "openpanel_password",
+            "openpanel_login_url"
+        ],
+        "package": [
+            "plan_name"
+        ],
+        "module": [
+            "hostname",
+            "server_name"
+        ]
+    }
+}
