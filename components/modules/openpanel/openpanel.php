@@ -1101,6 +1101,10 @@ class Openpanel extends Module
 
     private function isSuccessfulResponse(array $response)
     {
+        if (isset($response['body']['error'])) {
+            return false;
+        }
+
         if (isset($response['body']['success'])) {
             return (bool)$response['body']['success'];
         }

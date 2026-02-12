@@ -133,7 +133,8 @@ class OpenpanelApi
             CURLOPT_SSL_VERIFYPEER => $this->verify_ssl,
             CURLOPT_SSL_VERIFYHOST => $this->verify_ssl ? 2 : 0,
             CURLOPT_FOLLOWLOCATION => true,
-            CURLOPT_MAXREDIRS => 10
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_POSTREDIR => defined('CURL_REDIR_POST_ALL') ? CURL_REDIR_POST_ALL : 7
         ];
 
         switch (strtoupper($method)) {
